@@ -6,7 +6,7 @@ class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0x24292E),
+      //backgroundColor: ,
       body: Align(
         alignment: Alignment.center,
         child: Column(
@@ -19,7 +19,7 @@ class SplashScreen extends StatelessWidget {
               'C O N T A C T  B U D D Y',
               style: TextStyle(
                 fontSize: 25,
-                color: Colors.white70,
+                //color: Colors.white70,
               ),
             ),
           ],

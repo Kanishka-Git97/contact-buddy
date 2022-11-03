@@ -1,3 +1,4 @@
+import 'package:contact_buddy_app/screens/home_screen.dart';
 import 'package:contact_buddy_app/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const SplashScreen(),
+      home: const HomeScreen(),
     );
   }
 }
