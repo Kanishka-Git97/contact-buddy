@@ -1,8 +1,14 @@
+import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:contact_buddy_app/screens/home_screen.dart';
-import 'package:contact_buddy_app/screens/splash_screen.dart';
+import 'package:contact_buddy_app/screens/onboard_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
 
-void main() {
+int? isViewed;
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  isViewed = prefs.getInt('onboard');
   runApp(const MyApp());
 }
 
@@ -14,11 +20,19 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: 'Contact Buddy',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        brightness: Brightness.light,
       ),
-      home: const HomeScreen(),
+      darkTheme: ThemeData(
+        brightness: Brightness.dark,
+      ),
+      home: AnimatedSplashScreen.withScreenFunction(
+          splash: 'assets/images/logo.png',
+          splashTransition: SplashTransition.fadeTransition,
+          screenFunction: () async {
+            return isViewed != 0 ? OnBoardScreen() : HomeScreen();
+          }),
     );
   }
 }
