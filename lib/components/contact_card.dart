@@ -4,6 +4,7 @@ import 'package:contact_buddy_app/screens/home_screen.dart';
 import 'package:contact_buddy_app/utils/database_helper.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 
 class ContactCard extends StatefulWidget {
   const ContactCard(
@@ -90,12 +91,10 @@ class _ContactCardState extends State<ContactCard> {
                 children: [
                   IconButton(
                     icon: const Icon(Icons.call),
-                    onPressed: () {},
-                    splashRadius: 20,
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.mail),
-                    onPressed: () {},
+                    onPressed: () async {
+                      print('calling');
+                      await FlutterPhoneDirectCaller.callNumber(widget.mobile);
+                    },
                     splashRadius: 20,
                   ),
                   IconButton(

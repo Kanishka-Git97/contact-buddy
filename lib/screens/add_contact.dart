@@ -1,4 +1,4 @@
-import 'package:contact_buddy_app/components/alert.dart';
+import 'package:contact_buddy_app/components/msg_box.dart';
 import 'package:contact_buddy_app/components/custom_button.dart';
 import 'package:contact_buddy_app/components/custom_input.dart';
 import 'package:contact_buddy_app/models/contact.dart';
