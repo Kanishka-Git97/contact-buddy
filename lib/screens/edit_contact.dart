@@ -6,21 +6,25 @@ import 'package:contact_buddy_app/screens/home_screen.dart';
 import 'package:contact_buddy_app/utils/database_helper.dart';
 import 'package:flutter/material.dart';
 
-class AddContactScreen extends StatefulWidget {
-  AddContactScreen({Key? key}) : super(key: key);
+class EditContactScreen extends StatefulWidget {
+  const EditContactScreen({Key? key, required this.contact}) : super(key: key);
+
+  final Contact contact;
 
   @override
-  State<AddContactScreen> createState() => _AddContactScreenState();
+  State<EditContactScreen> createState() => _EditContactScreenState();
 }
 
-class _AddContactScreenState extends State<AddContactScreen> {
+class _EditContactScreenState extends State<EditContactScreen> {
   final _formKey = GlobalKey<FormState>();
+  Contact _contact = Contact();
 
   final _nameController = TextEditingController();
   final _mobileController = TextEditingController();
   final _emailController = TextEditingController();
 
-  Contact _contact = Contact();
+  //Initial controller State
+
   DatabaseHelper _dbHelper = DatabaseHelper.instance;
 
   @override
@@ -28,6 +32,10 @@ class _AddContactScreenState extends State<AddContactScreen> {
     super.initState();
     setState(() {
       _dbHelper = DatabaseHelper.instance;
+      _contact = widget.contact;
+      _nameController.text = widget.contact.name.toString();
+      _mobileController.text = widget.contact.mobile.toString();
+      _emailController.text = widget.contact.email.toString();
     });
   }
 
@@ -64,7 +72,7 @@ class _AddContactScreenState extends State<AddContactScreen> {
                       onTap: () => Navigator.pop(context),
                     ),
                     const Text(
-                      'Create new Contact',
+                      'Edit your Contact',
                       style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
@@ -139,7 +147,7 @@ class _AddContactScreenState extends State<AddContactScreen> {
                     btnColor: Colors.blue,
                     fontColor: Colors.white,
                     fontSize: 15,
-                    btnText: 'Add Contact',
+                    btnText: 'Edit Contact',
                     onPress: _onSubmit),
               ]),
             )
@@ -166,7 +174,7 @@ class _AddContactScreenState extends State<AddContactScreen> {
     _contact.mobile = _mobileController.text;
     _contact.email = _emailController.text;
 
-    await _dbHelper.insertContact(_contact);
+    await _dbHelper.updateContact(_contact);
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => HomeScreen()));
   }

@@ -13,7 +13,7 @@ class Contact {
   String? mobile;
   String? email;
 
-  Contact.fromMap(Map<String, dynamic> map) {
+  Contact.fromMap(Map<dynamic, dynamic> map) {
     id = map[colId];
     name = map[colName];
     mobile = map[colMobile];

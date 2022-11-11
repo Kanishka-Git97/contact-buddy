@@ -37,22 +37,13 @@ class _CustomTextFieldState extends State<CustomTextField> {
         child: TextFormField(
           controller: widget.controller,
           decoration: InputDecoration(
-              border: InputBorder.none,
-              labelText: widget.lableTxt,
-              hintText: widget.hintTxt,
-              hintStyle: const TextStyle(
-                fontSize: 15,
-              ),
-              suffixIcon: IconButton(
-                onPressed: () =>
-                    setState(() => isHiddenPassword = !isHiddenPassword),
-                icon: Icon(
-                    isHiddenPassword ? Icons.visibility : Icons.visibility_off),
-                color: widget.mode
-                    ? const Color.fromARGB(255, 96, 96, 96)
-                    : Colors.transparent,
-              )),
-          obscureText: widget.mode ? isHiddenPassword : false,
+            border: InputBorder.none,
+            labelText: widget.lableTxt,
+            hintText: widget.hintTxt,
+            hintStyle: const TextStyle(
+              fontSize: 15,
+            ),
+          ),
         ),
       ),
     );

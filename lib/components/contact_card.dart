@@ -1,14 +1,39 @@
+import 'package:contact_buddy_app/models/contact.dart';
+import 'package:contact_buddy_app/screens/edit_contact.dart';
+import 'package:contact_buddy_app/screens/home_screen.dart';
+import 'package:contact_buddy_app/utils/database_helper.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class ContactCard extends StatefulWidget {
-  const ContactCard({Key? key}) : super(key: key);
+  const ContactCard(
+      {Key? key,
+      required this.name,
+      required this.mobile,
+      required this.email,
+      required this.id,
+      required this.contact})
+      : super(key: key);
+
+  final String name;
+  final String mobile;
+  final String email;
+  final String id;
+  final Contact contact;
 
   @override
   State<ContactCard> createState() => _ContactCardState();
 }
 
 class _ContactCardState extends State<ContactCard> {
+  DatabaseHelper _dbHelper = DatabaseHelper.instance;
+
+  @override
+  void initState() {
+    super.initState();
+    _dbHelper = DatabaseHelper.instance;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -16,7 +41,7 @@ class _ContactCardState extends State<ContactCard> {
       child: Card(
         child: Column(
           children: [
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Row(
@@ -32,22 +57,34 @@ class _ContactCardState extends State<ContactCard> {
                     ),
                   ],
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 30,
                 ),
                 Column(
                   //mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Sample Name'),
-                    Text('+94776721937'),
-                    Text('purnakanishka97@gmail.com'),
+                    Text(
+                      widget.name,
+                      style: const TextStyle(
+                          fontSize: 18, fontWeight: FontWeight.w400),
+                    ),
+                    const SizedBox(height: 10),
+                    Text(
+                      widget.mobile,
+                      style: const TextStyle(fontWeight: FontWeight.w100),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      widget.email,
+                      style: const TextStyle(fontWeight: FontWeight.w300),
+                    ),
                   ],
                 )
               ],
             ),
             Padding(
-              padding: const EdgeInsets.all(8),
+              padding: const EdgeInsets.all(0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
@@ -63,7 +100,13 @@ class _ContactCardState extends State<ContactCard> {
                   ),
                   IconButton(
                     icon: const Icon(Icons.edit),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  EditContactScreen(contact: widget.contact)));
+                    },
                     splashRadius: 20,
                   ),
                   IconButton(
@@ -73,18 +116,25 @@ class _ContactCardState extends State<ContactCard> {
                         context: context,
                         builder: (context) => AlertDialog(
                           title: const Text('Delete Contact'),
-                          content: Text(
+                          content: const Text(
                               'Are you sure you want to delete this contact ?'),
                           actions: [
                             TextButton(
                               onPressed: () {
                                 Navigator.of(context).pop();
                               },
-                              child: Text('Cancel'),
+                              child: const Text('Cancel'),
                             ),
                             TextButton(
-                              onPressed: null,
-                              child: Text('Delete',
+                              onPressed: () async {
+                                await _dbHelper
+                                    .deleteContact(int.parse(widget.id));
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => HomeScreen()));
+                              },
+                              child: const Text('Delete',
                                   style: TextStyle(color: Colors.redAccent)),
                             ),
                           ],
