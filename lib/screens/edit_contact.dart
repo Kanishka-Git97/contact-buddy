@@ -5,6 +5,9 @@ import 'package:contact_buddy_app/models/contact.dart';
 import 'package:contact_buddy_app/screens/home_screen.dart';
 import 'package:contact_buddy_app/utils/database_helper.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+
+import '../utils/utility_helper.dart';
 
 class EditContactScreen extends StatefulWidget {
   const EditContactScreen({Key? key, required this.contact}) : super(key: key);
@@ -18,14 +21,13 @@ class EditContactScreen extends StatefulWidget {
 class _EditContactScreenState extends State<EditContactScreen> {
   final _formKey = GlobalKey<FormState>();
   Contact _contact = Contact();
-
+  //Initial controller State
   final _nameController = TextEditingController();
   final _mobileController = TextEditingController();
   final _emailController = TextEditingController();
 
-  //Initial controller State
-
   DatabaseHelper _dbHelper = DatabaseHelper.instance;
+  Image _img = Image.asset('assets/images/sampleuser.webp');
 
   @override
   void initState() {
@@ -37,6 +39,7 @@ class _EditContactScreenState extends State<EditContactScreen> {
       _mobileController.text = widget.contact.mobile.toString();
       _emailController.text = widget.contact.email.toString();
     });
+    _refreshImg(widget.contact.img);
   }
 
   @override
@@ -84,23 +87,26 @@ class _EditContactScreenState extends State<EditContactScreen> {
                   bottom: 20,
                   left: 30,
                   child: Center(
-                    child: Stack(children: const [
+                    child: Stack(children: [
                       SizedBox(
                         height: 75,
                         width: 75,
                         child: CircleAvatar(
-                          radius: 80.0,
-                          backgroundImage:
-                              AssetImage('assets/images/sampleuser.webp'),
-                        ),
+                            radius: 80.0,
+                            child: ClipRRect(
+                                child: _img,
+                                borderRadius: BorderRadius.circular(50.0))),
                       ),
                       Positioned(
                         bottom: 0,
                         right: 0,
-                        child: Icon(
-                          Icons.add_circle_rounded,
-                          color: Color.fromARGB(255, 3, 96, 126),
-                          size: 28.0,
+                        child: GestureDetector(
+                          onTap: _imgPicker,
+                          child: const Icon(
+                            Icons.update_rounded,
+                            color: Color.fromARGB(255, 3, 96, 126),
+                            size: 28.0,
+                          ),
                         ),
                       )
                     ]),
@@ -155,6 +161,26 @@ class _EditContactScreenState extends State<EditContactScreen> {
         ),
       )),
     ));
+  }
+
+  _imgPicker() async {
+    late String imgString;
+    //print('Image Picker Function');
+    ImagePicker().pickImage(source: ImageSource.gallery).then((imgFile) async {
+      //print(imgFile)
+      imgString = Utility.base64String(await imgFile!.readAsBytes());
+      _contact.img = imgString;
+      _refreshImg(imgString);
+    });
+  }
+
+  //Refreshing Exist Image
+  _refreshImg(file) async {
+    if (file == null) return;
+    Image img = Utility.imageFromBase64String(file.toString());
+    setState(() {
+      _img = img;
+    });
   }
 
   _onSubmit() async {

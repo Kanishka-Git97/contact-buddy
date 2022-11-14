@@ -9,7 +9,7 @@ import 'package:sqflite/sqflite.dart';
 class DatabaseHelper {
   //Configuration Database
   static final _dbName = 'contactBuddy.db';
-  static final _dbVersion = 1;
+  static final _dbVersion = 2; //Version 2.0 Feature Update With Image Upload
 
   //Convert Class to Singleton Class
   DatabaseHelper._();
@@ -38,7 +38,9 @@ class DatabaseHelper {
         ${Contact.colId} INTEGER PRIMARY KEY AUTOINCREMENT,
         ${Contact.colName} TEXT NOT NULL,
         ${Contact.colMobile} TEXT NOT NULL,
-        ${Contact.colEmail} TEXT
+        ${Contact.colEmail} TEXT,
+        ${Contact.colImg} TEXT,
+        ${Contact.colFavorite} INTEGER
       )
     ''');
   }

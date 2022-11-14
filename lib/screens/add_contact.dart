@@ -4,7 +4,9 @@ import 'package:contact_buddy_app/components/custom_input.dart';
 import 'package:contact_buddy_app/models/contact.dart';
 import 'package:contact_buddy_app/screens/home_screen.dart';
 import 'package:contact_buddy_app/utils/database_helper.dart';
+import 'package:contact_buddy_app/utils/utility_helper.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 class AddContactScreen extends StatefulWidget {
   AddContactScreen({Key? key}) : super(key: key);
@@ -15,6 +17,8 @@ class AddContactScreen extends StatefulWidget {
 
 class _AddContactScreenState extends State<AddContactScreen> {
   final _formKey = GlobalKey<FormState>();
+
+  Image _img = Image.asset('assets/images/sampleuser.webp');
 
   final _nameController = TextEditingController();
   final _mobileController = TextEditingController();
@@ -76,23 +80,26 @@ class _AddContactScreenState extends State<AddContactScreen> {
                   bottom: 20,
                   left: 30,
                   child: Center(
-                    child: Stack(children: const [
+                    child: Stack(children: [
                       SizedBox(
                         height: 75,
                         width: 75,
                         child: CircleAvatar(
-                          radius: 80.0,
-                          backgroundImage:
-                              AssetImage('assets/images/sampleuser.webp'),
-                        ),
+                            radius: 80.0,
+                            child: ClipRRect(
+                                child: _img,
+                                borderRadius: BorderRadius.circular(50.0))),
                       ),
                       Positioned(
                         bottom: 0,
                         right: 0,
-                        child: Icon(
-                          Icons.add_circle_rounded,
-                          color: Color.fromARGB(255, 3, 96, 126),
-                          size: 28.0,
+                        child: GestureDetector(
+                          onTap: _imgPicker,
+                          child: const Icon(
+                            Icons.add_circle_rounded,
+                            color: Color.fromARGB(255, 3, 96, 126),
+                            size: 28.0,
+                          ),
                         ),
                       )
                     ]),
@@ -142,11 +149,30 @@ class _AddContactScreenState extends State<AddContactScreen> {
                     btnText: 'Add Contact',
                     onPress: _onSubmit),
               ]),
-            )
+            ),
           ],
         ),
       )),
     ));
+  }
+
+  _imgPicker() async {
+    late String imgString;
+    //print('Image Picker Function');
+    ImagePicker().pickImage(source: ImageSource.gallery).then((imgFile) async {
+      //print(imgFile)
+      imgString = Utility.base64String(await imgFile!.readAsBytes());
+      _contact.img = imgString;
+      _refreshImg(imgString);
+    });
+  }
+
+  //Refreshing Exist Image
+  _refreshImg(String file) async {
+    Image img = Utility.imageFromBase64String(file);
+    setState(() {
+      _img = img;
+    });
   }
 
   _onSubmit() async {
@@ -165,6 +191,7 @@ class _AddContactScreenState extends State<AddContactScreen> {
     _contact.name = _nameController.text;
     _contact.mobile = _mobileController.text;
     _contact.email = _emailController.text;
+    _contact.favorite = 0;
 
     await _dbHelper.insertContact(_contact);
     Navigator.push(

@@ -35,6 +35,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15.0),
         child: TextFormField(
+          validator: (value) => isValidName(value.toString()),
           controller: widget.controller,
           decoration: InputDecoration(
             border: InputBorder.none,
@@ -48,4 +49,13 @@ class _CustomTextFieldState extends State<CustomTextField> {
       ),
     );
   }
+}
+
+//Validators
+//Name Validation
+String isValidName(String value) {
+  if (value.length < 3) {
+    return 'Name must be more than 3 characters long';
+  }
+  return '';
 }
