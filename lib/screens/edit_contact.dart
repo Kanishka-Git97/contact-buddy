@@ -131,6 +131,7 @@ class _EditContactScreenState extends State<EditContactScreen> {
                   height: 10,
                 ),
                 CustomTextField(
+                  type: true,
                   hintTxt: '+94123456789',
                   lableTxt: 'Phone Number',
                   mode: false,
@@ -184,7 +185,7 @@ class _EditContactScreenState extends State<EditContactScreen> {
   }
 
   _onSubmit() async {
-    if (_emailController.text.isEmpty ||
+    if (
         _mobileController.text.isEmpty ||
         _nameController.text.isEmpty) {
       return showDialog(

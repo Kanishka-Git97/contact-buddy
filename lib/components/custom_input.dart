@@ -3,19 +3,20 @@ import 'dart:ffi';
 import 'package:flutter/material.dart';
 
 class CustomTextField extends StatefulWidget {
-  const CustomTextField(
+  CustomTextField(
       {Key? key,
       required this.hintTxt,
       required this.lableTxt,
       required this.mode,
-      required this.controller})
+      required this.controller,
+      this.type = false})
       : super(key: key);
 
   final String hintTxt;
   final String lableTxt;
   final bool mode;
   final TextEditingController controller;
-
+  bool? type;
   @override
   State<CustomTextField> createState() => _CustomTextFieldState();
 }
@@ -35,6 +36,8 @@ class _CustomTextFieldState extends State<CustomTextField> {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15.0),
         child: TextFormField(
+          keyboardType:
+              widget.type == true ? TextInputType.phone : TextInputType.text,
           validator: (value) => isValidName(value.toString()),
           controller: widget.controller,
           decoration: InputDecoration(

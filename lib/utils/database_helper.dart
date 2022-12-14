@@ -51,12 +51,12 @@ class DatabaseHelper {
     return await db.insert(Contact.tblContact, contact.toMap());
   }
 
-  Future<List<Contact>> fetchContacts() async {
+  Future<List<Map<String, dynamic>>> fetchContacts() async {
     Database db = await database;
-    List<Map> contacts = await db.query(Contact.tblContact);
-    return contacts.length == 0
-        ? []
-        : contacts.map((e) => Contact.fromMap(e)).toList();
+    return await db.query(Contact.tblContact);
+    // return contacts.length == 0
+    //     ? []
+    //     : contacts.map((e) => Contact.fromMap(e)).toList();
   }
 
   Future<int> deleteContact(int id) async {

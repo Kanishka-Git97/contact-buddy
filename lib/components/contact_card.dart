@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:contact_buddy_app/models/contact.dart';
 import 'package:contact_buddy_app/screens/edit_contact.dart';
 import 'package:contact_buddy_app/screens/home_screen.dart';
@@ -24,7 +26,7 @@ class _ContactCardState extends State<ContactCard> {
   void initState() {
     super.initState();
     _dbHelper = DatabaseHelper.instance;
-    _refreshImg(widget.contact.img);
+    //_refreshImg(widget.contact.img);
     setState(() {
       if (widget.contact.favorite == 1) {
         _favorite = Icons.favorite;
@@ -56,7 +58,10 @@ class _ContactCardState extends State<ContactCard> {
                       width: 50,
                       child: CircleAvatar(
                         child: ClipRRect(
-                          child: _profileImg,
+                          child: widget.contact.img == null
+                              ? _profileImg
+                              : Image.memory(Base64Decoder()
+                                  .convert(widget.contact.img.toString())),
                           borderRadius: BorderRadius.circular(50.0),
                         ),
                       ),

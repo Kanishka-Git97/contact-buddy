@@ -16,8 +16,8 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final _searchController = TextEditingController();
 
-  List<Contact> _contacts = [];
-  List<Contact> _displayContacts = [];
+  List<Map<String, dynamic>> _contacts = [];
+  List<Map<String, dynamic>> _displayContacts = [];
 
   DatabaseHelper _dbHelper = DatabaseHelper.instance;
 
@@ -113,6 +113,7 @@ class _HomeScreenState extends State<HomeScreen> {
       //   icon: const Icon(Icons.add_circle_outline_outlined),
       // ),
       floatingActionButton: SpeedDial(
+        backgroundColor: Colors.blueAccent,
         animatedIcon: AnimatedIcons.menu_close,
         animatedIconTheme: IconThemeData(size: 28.0),
         visible: true,
@@ -137,7 +138,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   _refreshContacts() async {
-    List<Contact> contacts = await _dbHelper.fetchContacts();
+    List<Map<String, dynamic>> contacts = await _dbHelper.fetchContacts();
     setState(() {
       _contacts = contacts;
       _displayContacts = contacts;
@@ -149,7 +150,7 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       _displayContacts = _contacts
           .where((element) =>
-              element.name!.toLowerCase().contains(value.toLowerCase()))
+              element['name'].toLowerCase().contains(value.toLowerCase()))
           .toList();
     });
     imageCache.clear();
@@ -160,7 +161,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void _favoriteContacts() {
     setState(() {
       _displayContacts = _contacts
-          .where((element) => element.favorite!
+          .where((element) => element['favorite']
               .toString()
               .toLowerCase()
               .contains('1'.toLowerCase()))
@@ -176,11 +177,11 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   //Listing Contacts
-  ListView buildList(List<Contact> list) {
+  ListView buildList(List<Map<String, dynamic>> list) {
     return ListView.builder(
       itemBuilder: (context, index) {
         return ContactCard(
-          contact: list[index],
+          contact: Contact.fromMap(list[index]),
         );
       },
       itemCount: list.length,
