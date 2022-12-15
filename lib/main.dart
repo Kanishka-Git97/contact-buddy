@@ -28,8 +28,10 @@ class MyApp extends StatelessWidget {
         brightness: Brightness.dark,
       ),
       home: AnimatedSplashScreen.withScreenFunction(
+          backgroundColor: Color.fromARGB(255, 49, 49, 49),
           splash: 'assets/images/logo.png',
-          splashTransition: SplashTransition.fadeTransition,
+          splashIconSize: 100,
+          splashTransition: SplashTransition.sizeTransition,
           screenFunction: () async {
             return isViewed != 0 ? OnBoardScreen() : HomeScreen();
           }),

@@ -18,26 +18,23 @@ class OnboardModel {
 
 List<OnboardModel> screens = <OnboardModel>[
   OnboardModel(
-    img: 'assets/images/sammy-23.png',
-    text: "Digital Veterinary Clinic",
-    desc:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus pulvinar dui et erat convallis dapibus. Duis dolor mauris, bibendum non purus nec, finibus accumsan lectus. Nulla malesuada laoreet erat. In arcu nunc, egestas at erat ut, tristique pellentesque augue.",
+    img: 'assets/images/slide01.png',
+    text: "Welcome, ",
+    desc: "Welcome to the Contact Buddy Contact Manager",
     bg: Colors.white,
     button: Color(0xFF4756DF),
   ),
   OnboardModel(
-    img: 'assets/images/clip-1033.png',
-    text: "Digital Veterinary Clinic",
-    desc:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus pulvinar dui et erat convallis dapibus. Duis dolor mauris, bibendum non purus nec, finibus accumsan lectus. Nulla malesuada laoreet erat. In arcu nunc, egestas at erat ut, tristique pellentesque augue.",
+    img: 'assets/images/slide02.png',
+    text: "Expand Your Social",
+    desc: "Easily connect your peoples via Contact Buddy",
     bg: Colors.white,
     button: Color(0xFF4756DF),
   ),
   OnboardModel(
-    img: 'assets/images/Veterinary-pana.png',
-    text: "Digital Veterinary Clinic",
-    desc:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus pulvinar dui et erat convallis dapibus. Duis dolor mauris, bibendum non purus nec, finibus accumsan lectus. Nulla malesuada laoreet erat. In arcu nunc, egestas at erat ut, tristique pellentesque augue.",
+    img: 'assets/images/slide03.png',
+    text: "Close with Your Favorites",
+    desc: "Add your contacts to the favorites list with Contact Buddy",
     bg: Colors.white,
     button: Color(0xFF4756DF),
   ),

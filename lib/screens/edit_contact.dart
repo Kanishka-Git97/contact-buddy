@@ -4,35 +4,42 @@ import 'package:contact_buddy_app/components/custom_input.dart';
 import 'package:contact_buddy_app/models/contact.dart';
 import 'package:contact_buddy_app/screens/home_screen.dart';
 import 'package:contact_buddy_app/utils/database_helper.dart';
-import 'package:contact_buddy_app/utils/utility_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
-class AddContactScreen extends StatefulWidget {
-  AddContactScreen({Key? key}) : super(key: key);
+import '../utils/utility_helper.dart';
+
+class EditContactScreen extends StatefulWidget {
+  const EditContactScreen({Key? key, required this.contact}) : super(key: key);
+
+  final Contact contact;
 
   @override
-  State<AddContactScreen> createState() => _AddContactScreenState();
+  State<EditContactScreen> createState() => _EditContactScreenState();
 }
 
-class _AddContactScreenState extends State<AddContactScreen> {
+class _EditContactScreenState extends State<EditContactScreen> {
   final _formKey = GlobalKey<FormState>();
-
-  Image _img = Image.asset('assets/images/sampleuser.webp');
-
+  Contact _contact = Contact();
+  //Initial controller State
   final _nameController = TextEditingController();
   final _mobileController = TextEditingController();
   final _emailController = TextEditingController();
 
-  Contact _contact = Contact();
   DatabaseHelper _dbHelper = DatabaseHelper.instance;
+  Image _img = Image.asset('assets/images/sampleuser.webp');
 
   @override
   void initState() {
     super.initState();
     setState(() {
       _dbHelper = DatabaseHelper.instance;
+      _contact = widget.contact;
+      _nameController.text = widget.contact.name.toString();
+      _mobileController.text = widget.contact.mobile.toString();
+      _emailController.text = widget.contact.email.toString();
     });
+    _refreshImg(widget.contact.img);
   }
 
   @override
@@ -68,7 +75,7 @@ class _AddContactScreenState extends State<AddContactScreen> {
                       onTap: () => Navigator.pop(context),
                     ),
                     const Text(
-                      'Create new Contact',
+                      'Edit your Contact',
                       style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
@@ -96,7 +103,7 @@ class _AddContactScreenState extends State<AddContactScreen> {
                         child: GestureDetector(
                           onTap: _imgPicker,
                           child: const Icon(
-                            Icons.add_circle_rounded,
+                            Icons.update_rounded,
                             color: Color.fromARGB(255, 3, 96, 126),
                             size: 28.0,
                           ),
@@ -147,10 +154,10 @@ class _AddContactScreenState extends State<AddContactScreen> {
                     btnColor: Colors.blue,
                     fontColor: Colors.white,
                     fontSize: 15,
-                    btnText: 'Add Contact',
+                    btnText: 'Edit Contact',
                     onPress: _onSubmit),
               ]),
-            ),
+            )
           ],
         ),
       )),
@@ -169,15 +176,18 @@ class _AddContactScreenState extends State<AddContactScreen> {
   }
 
   //Refreshing Exist Image
-  _refreshImg(String file) async {
-    Image img = Utility.imageFromBase64String(file);
+  _refreshImg(file) async {
+    if (file == null) return;
+    Image img = Utility.imageFromBase64String(file.toString());
     setState(() {
       _img = img;
     });
   }
 
   _onSubmit() async {
-    if (_mobileController.text.isEmpty || _nameController.text.isEmpty) {
+    if (
+        _mobileController.text.isEmpty ||
+        _nameController.text.isEmpty) {
       return showDialog(
         context: context,
         builder: (context) => const CustomAlert(
@@ -190,9 +200,8 @@ class _AddContactScreenState extends State<AddContactScreen> {
     _contact.name = _nameController.text;
     _contact.mobile = _mobileController.text;
     _contact.email = _emailController.text;
-    _contact.favorite = 0;
 
-    await _dbHelper.insertContact(_contact);
+    await _dbHelper.updateContact(_contact);
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => HomeScreen()));
   }

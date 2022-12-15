@@ -38,10 +38,22 @@ dependencies:
   shared_preferences: ^2.0.15
   sqflite: any
   path_provider: any
+  flutter_phone_direct_caller: ^2.1.1
+  image_picker: ^0.8.5+3
+  flutter_speed_dial: ^6.2.0
+  flutter_launcher_icons: ^0.11.0
+  
+
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+flutter_icons: 
+  android: true
+  image_path: "assets/images/logo.png"
+  adaptive_icon_background: "#ffffff"
+  adaptive_icon_foreground: "assets/images/logo-f.png"
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -64,9 +76,10 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/images/logo.png
-    - assets/images/sammy-23.png
-    - assets/images/clip-1033.png
-    - assets/images/Veterinary-pana.png
+    - assets/images/logo-f.png
+    - assets/images/slide01.png
+    - assets/images/slide02.png
+    - assets/images/slide03.png
     - assets/images/sampleuser.webp
     - assets/images/bg.webp
   #   - images/a_dot_ham.jpeg
